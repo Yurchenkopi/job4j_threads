@@ -9,6 +9,13 @@ import java.util.regex.Pattern;
 
 public class Wget implements Runnable {
 
+    private static final String URL_REGEX =
+            "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}"
+                    + "\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)";
+
+    private static final String NUM_REGEX =
+            "[-+]?\\d+";
+
     private final String url;
     private final int speed;
 
@@ -21,7 +28,7 @@ public class Wget implements Runnable {
     public void run() {
         System.out.println("Downloading...");
         String[] temp = url.split("/");
-        var file = new File("C:\\projects\\job4j_threads\\data\\wget\\" + temp[temp.length - 1]);
+        var file = new File(".\\data\\wget\\" + temp[temp.length - 1]);
         try (var input = new URL(url).openStream();
              var output = new FileOutputStream(file)) {
             var dataBuffer = new byte[speed];
@@ -54,13 +61,6 @@ public class Wget implements Runnable {
     }
 
     private static void validate(String[] args) {
-        final String URL_REGEX =
-                "https?://(www\\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}"
-                        + "\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)";
-
-        final String NUM_REGEX =
-                "[-+]?\\d+";
-
         Pattern urlPattern = Pattern.compile(URL_REGEX);
         Pattern numPattern = Pattern.compile(NUM_REGEX);
         if (args.length <= 1) {
