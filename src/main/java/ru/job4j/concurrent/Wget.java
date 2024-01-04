@@ -16,6 +16,9 @@ public class Wget implements Runnable {
     private static final String NUM_REGEX =
             "[-+]?\\d+";
 
+    private static final Pattern URL_PATTERN = Pattern.compile(URL_REGEX);
+    private static final Pattern NUM_PATTERN = Pattern.compile(NUM_REGEX);
+
     private final String url;
     private final int speed;
 
@@ -61,15 +64,13 @@ public class Wget implements Runnable {
     }
 
     private static void validate(String[] args) {
-        Pattern urlPattern = Pattern.compile(URL_REGEX);
-        Pattern numPattern = Pattern.compile(NUM_REGEX);
         if (args.length <= 1) {
             throw new IllegalArgumentException("One or more parameters are empty");
         }
-        if (!urlPattern.matcher(args[0]).find()) {
+        if (!URL_PATTERN.matcher(args[0]).find()) {
             throw new IllegalArgumentException("Incorrect url parameter");
         }
-        if (!numPattern.matcher(args[1]).find()) {
+        if (!NUM_PATTERN.matcher(args[1]).find()) {
             throw new IllegalArgumentException("Incorrect speed limit parameter");
         }
     }
