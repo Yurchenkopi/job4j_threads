@@ -12,18 +12,18 @@ public final class ParseFile {
     }
 
     public String getContent(Predicate<Character> filter) {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         int data;
         try (InputStream input = new BufferedInputStream(new FileInputStream(file))) {
-            while ((data = input.read()) > 0) {
+            while ((data = input.read()) != -1) {
                 if (filter.test((char) data)) {
-                    output += (char) data;
+                    output.append((char) data);
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return output;
+        return output.toString();
     }
 
 

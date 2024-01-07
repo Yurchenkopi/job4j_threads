@@ -5,7 +5,10 @@ import java.nio.file.Paths;
 
 public class SimpleContentSaver implements ContentSaver {
 
-    File file = Paths.get(".//data//io//ParseFile//target.txt").toFile();
+    private final String path = ".//data//io//ParseFile//target.txt";
+
+    private final File file = Paths.get(path).toFile();
+
 
     @Override
     public void save(String content) {
