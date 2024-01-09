@@ -25,14 +25,15 @@ public class AccountStorage {
 
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         boolean rsl = false;
+        Optional<Account> fromAcc = getById(fromId);
+        Optional<Account> toAcc = getById(toId);
         if (
-                getById(fromId).isPresent() && getById(toId).isPresent()
+                fromAcc.isPresent() && toAcc.isPresent()
                         && amount <= accounts.get(fromId).amount()
         ) {
-            Account fromAcc = accounts.get(fromId);
-            Account toAcc = accounts.get(toId);
-            int fromAccAmount = fromAcc.amount() - amount;
-            int toAccAmount = toAcc.amount() + amount;
+
+            int fromAccAmount = fromAcc.get().amount() - amount;
+            int toAccAmount = toAcc.get().amount() + amount;
             rsl = update(new Account(fromId, fromAccAmount))
                     && update(new Account(toId, toAccAmount));
         }
