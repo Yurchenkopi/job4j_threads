@@ -13,11 +13,8 @@ public class CountBarrier {
 
     public void count() {
         synchronized (monitor) {
-            if (count >= total) {
-                monitor.notifyAll();
-            } else {
-                count++;
-            }
+            count++;
+            monitor.notifyAll();
         }
     }
 
@@ -38,7 +35,7 @@ public class CountBarrier {
         Thread master = new Thread(
                 () -> {
                     System.out.println(Thread.currentThread().getName() + " started");
-                    for (int i = 0; i <= countBarrier.count; i++) {
+                    for (int i = 0; i <= countBarrier.total; i++) {
                         System.out.printf("count = %d%s",
                                 countBarrier.count, System.lineSeparator());
                         countBarrier.count();
