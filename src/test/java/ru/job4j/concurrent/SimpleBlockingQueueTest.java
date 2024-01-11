@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.*;
 class SimpleBlockingQueueTest {
 
     @Test
-    public void whenOfferAndPollThenVerify () throws InterruptedException {
+    public void whenOfferAndPollThenVerify() throws InterruptedException {
         SimpleBlockingQueue<String> sbq = new SimpleBlockingQueue<>(4);
         List<String> rsl = new ArrayList<>();
         String first = "first";
