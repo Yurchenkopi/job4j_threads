@@ -7,13 +7,12 @@ public class ParallelSearch {
     public static void main(String[] args) throws InterruptedException {
 
         final int capacity = 10;
-        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<Integer>(capacity);
+        SimpleBlockingQueue<Integer> queue = new SimpleBlockingQueue<>(capacity);
         final Thread consumer = new Thread(
                 () -> {
-                    while (!Thread.currentThread().isInterrupted()) {
+                    while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
                         try {
                             System.out.println(queue.poll());
-
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                         }
@@ -21,7 +20,7 @@ public class ParallelSearch {
                 }
         );
         consumer.start();
-        final Thread produced = new Thread(
+        final Thread producer = new Thread(
                 () -> {
                     for (int index = 0; index != 3; index++) {
                         try {
@@ -34,12 +33,8 @@ public class ParallelSearch {
                 }
 
         );
-        produced.start();
-        produced.join();
-        while (consumer.isAlive()) {
-            if (consumer.getState() == Thread.State.WAITING) {
-                consumer.interrupt();
-            }
-        }
+        producer.start();
+        producer.join();
+        consumer.interrupt();
     }
 }
