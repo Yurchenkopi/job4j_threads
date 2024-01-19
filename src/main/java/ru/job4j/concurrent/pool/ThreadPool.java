@@ -8,13 +8,14 @@ import java.util.List;
 public class ThreadPool {
 
     private final int size = Runtime.getRuntime().availableProcessors();
-    private final int capacity = 5;
 
     private final List<Thread> threads = new LinkedList<>();
-    private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(capacity);
+    private final SimpleBlockingQueue<Runnable> tasks;
 
-    public ThreadPool() {
+    public ThreadPool(final int capacity) {
+        tasks = new SimpleBlockingQueue<>(capacity);
         for (int i = 0; i < size; i++) {
+            System.out.println(i);
             Thread thread = new Thread(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
                     try {
@@ -34,11 +35,11 @@ public class ThreadPool {
     }
 
     public void shutdown() {
-        threads.forEach(Thread :: interrupt);
+        threads.forEach(Thread::interrupt);
     }
 
     public static void main(String[] args) throws InterruptedException {
-        ThreadPool threadPool = new ThreadPool();
+        ThreadPool threadPool = new ThreadPool(5);
         for (int i = 0; i < 8; i++) {
             int tempI = i;
             threadPool.work(() -> {
