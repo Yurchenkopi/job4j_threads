@@ -1,7 +1,5 @@
 package ru.job4j.concurrent.pool;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -10,27 +8,30 @@ public class EmailNotification {
             Runtime.getRuntime().availableProcessors()
     );
 
-    public final List<String> notifications = new ArrayList<>();
-
     public void emailTo(User user) {
-        pool.submit(new Runnable() {
-            @Override
-            public void run() {
-                notifications.add(String.format(
-                        "subject = Notification {%s} to email {%s}.%s"
-                                + "body = Add a new event to {%s}",
-                        user.username(), user.email(), System.lineSeparator(), user.username()
-                ));
-            }
+        pool.submit(() -> {
+            String subject = String.format("Notification {%s} to email {%s}.",
+                    user.username(), user.email());
+            String body = String.format("Add a new event to {%s}",
+                    user.username());
+            send(subject, body, user.email());
         });
     }
 
     public void send(String subject, String body, String email) {
-
+        System.out.println(subject);
+        System.out.println(body);
     }
 
     public void close() {
         pool.shutdown();
+        while (!pool.isTerminated()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public static void main(String[] args) throws InterruptedException {
@@ -41,8 +42,6 @@ public class EmailNotification {
         en.emailTo(u1);
         en.emailTo(u2);
         en.emailTo(u3);
-        Thread.sleep(500);
         en.close();
-        en.notifications.forEach(System.out::println);
     }
 }
