@@ -35,7 +35,7 @@ class ArrayIndexSearchTest {
     public void whenIntegerArrayAndRecursiveSearchThenFoundIndex() {
         Integer[] data = new Integer[] {
                 23, 142, 432, 112, 123, 12, 324, 123, 1, 123,
-                567, 1234, 452, 12, 567, 890, 900 ,232, 123
+                567, 1234, 452, 12, 567, 890, 900, 232, 123
         };
         int rsl1 = new ArrayIndexSearch<>(data, 1234, 0, data.length - 1).findIndex();
         int rsl2 = new ArrayIndexSearch<>(data, 900, 0, data.length - 1).findIndex();
@@ -59,7 +59,7 @@ class ArrayIndexSearchTest {
     public void whenIntegerArrayAndRecursiveSearchThenNotFoundIndex() {
         Integer[] data = new Integer[] {
                 23, 142, 432, 112, 123, 12, 324, 123, 1, 123,
-                567, 1234, 452, 12, 567, 890, 900 ,232, 123
+                567, 1234, 452, 12, 567, 890, 900, 232, 123
         };
         int rsl = new ArrayIndexSearch<>(data, 1222, 0, data.length - 1).findIndex();
         assertThat(rsl).isEqualTo(-1);
