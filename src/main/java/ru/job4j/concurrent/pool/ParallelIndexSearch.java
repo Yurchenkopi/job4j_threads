@@ -19,18 +19,14 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (from == to) {
-            if (object.equals(array[from])) {
-                return from;
-            }
-        } else {
-            int middle = (from + to) / 2;
-            ParallelIndexSearch<T> leftSearch = new ParallelIndexSearch<>(array, object, from, middle);
-            ParallelIndexSearch<T> rightSearch = new ParallelIndexSearch<>(array, object, middle + 1, to);
-            leftSearch.fork();
-            rightSearch.fork();
-            return leftSearch.join() != -1 ? leftSearch.join() : rightSearch.join();
+            return object.equals(array[from]) ? from : -1;
         }
-        return -1;
+        int middle = (from + to) / 2;
+        ParallelIndexSearch<T> leftSearch = new ParallelIndexSearch<>(array, object, from, middle);
+        ParallelIndexSearch<T> rightSearch = new ParallelIndexSearch<>(array, object, middle + 1, to);
+        leftSearch.fork();
+        rightSearch.fork();
+        return leftSearch.join() != -1 ? leftSearch.join() : rightSearch.join();
     }
 
     public int findIndex() {
