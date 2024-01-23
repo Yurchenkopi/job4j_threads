@@ -19,7 +19,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
     @Override
     protected Integer compute() {
         if (to - from < 10) {
-            return findIndexLinear(from, to);
+            return findIndexLinear();
         }
         int middle = (from + to) / 2;
         ParallelIndexSearch<T> leftSearch = new ParallelIndexSearch<>(array, object, from, middle);
@@ -31,7 +31,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
         return Math.max(firstResult, secondResult);
     }
 
-    public int findIndexLinear(int from, int to) {
+    public int findIndexLinear() {
         int rsl = -1;
         for (int i = from; i <= to; i++) {
             if (object.equals(array[i])) {
