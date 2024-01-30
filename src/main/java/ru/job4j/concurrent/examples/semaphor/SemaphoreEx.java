@@ -1,4 +1,4 @@
-package ru.job4j.concurrent.examples;
+package ru.job4j.concurrent.examples.semaphor;
 
 import java.util.concurrent.Semaphore;
 
